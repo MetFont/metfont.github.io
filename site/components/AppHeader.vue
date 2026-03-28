@@ -66,8 +66,8 @@ onMounted(() => {
             </svg>
           </div>
           <div class="hidden sm:block">
-            <div class="text-sm font-semibold" style="color: var(--text-primary)">MetFont</div>
-            <div class="text-xs" style="color: var(--text-tertiary)">Symbols from OGC MetOcean DWG World Weather Symbols</div>
+            <div class="text-sm font-semibold" style="color: var(--text-primary)">MetFont: Symbols for Accurate Weather</div>
+            <div class="text-xs" style="color: var(--text-tertiary)">OGC/WMO/ICAO weather symbols in a font</div>
           </div>
         </a>
         <div class="flex items-center gap-3">
