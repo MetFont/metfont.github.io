@@ -193,11 +193,13 @@ const planeList = computed(() => {
           <div class="pipeline-step">
             <div class="pipeline-number">3</div>
             <div>
-              <h4 class="text-sm font-semibold" style="color: var(--text-primary)">Stripped SVGs</h4>
+              <h4 class="text-sm font-semibold" style="color: var(--text-primary)">Path Union &amp; Normalization</h4>
               <p class="body-text text-xs">
-                Inkscape processes <code>icons/</code> to ungroup elements, convert strokes to paths, union
-                overlapping shapes, and export to <code>icons-stripped/</code>. FontForge silently drops
-                stroked elements, making this step mandatory.
+                <code>normalize-svg.py</code> uses <code>picosvg</code> to convert strokes to fills,
+                bakes transforms into path data, and normalises the viewBox to 0&ndash;72. A second pass
+                runs Inkscape's <code>path-combine</code> on every multi-path SVG to merge overlapping
+                outlines into a single compound path — preventing holes from rendering as solid fill in the
+                final font. Output goes to <code>color/svg/</code>.
               </p>
             </div>
           </div>
@@ -216,27 +218,91 @@ const planeList = computed(() => {
         </div>
       </section>
 
-      <!-- Usage -->
+      <!-- The Logo -->
       <section class="about-section">
-        <h2 class="about-section-title">Usage</h2>
+        <h2 class="about-section-title">The Logo</h2>
+
+        <div class="logo-showcase">
+          <img src="/logo-full.svg" alt="MetFont Logo" class="logo-full-display" />
+        </div>
+
         <p class="body-text mb-4">
-          Embed MetFont in your application using a standard CSS <code>@font-face</code> declaration:
+          The MetFont logo is not merely a brand mark — it is a compact philosophical statement encoded in
+          two meteorological symbols. Its design draws from the transition between
+          <strong style="color: var(--text-primary)">Past Weather</strong> and
+          <strong style="color: var(--text-primary)">Present Weather</strong>, two of the seven symbol
+          categories encoded in the font itself.
         </p>
-        <pre class="about-code"><code>@font-face {
-  font-family: 'MetFont';
-  src: url('MetFont-glyf.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
 
-.weather-symbol {
-  font-family: 'MetFont', sans-serif;
-}
+        <div class="logo-symbols-explainer">
+          <div class="logo-symbol-item">
+            <div class="logo-symbol-visual">
+              <img src="/logo-icon.svg" alt="Past Weather" class="logo-symbol-icon" />
+            </div>
+            <div class="logo-symbol-info">
+              <h4 class="text-sm font-semibold" style="color: var(--text-primary)">Past Weather &mdash; U+E302</h4>
+              <p class="body-text text-xs">
+                <strong>W1W2 &mdash; Fog or ice deposit</strong> (WMO Code Table 4561). Three horizontal
+                bars symbolise the sky being partially or wholly obscured by fog, mist, or ice crystals.
+                In the logo this symbol occupies the <em>left</em> position — what was.
+              </p>
+            </div>
+          </div>
 
-/* Reference a specific symbol by Unicode codepoint */
-.cloud-symbol::before {
-  content: '\E000';
-}</code></pre>
+          <div class="logo-symbol-arrow">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+
+          <div class="logo-symbol-item">
+            <div class="logo-symbol-visual">
+              <div class="logo-clear-sky">
+                <svg viewBox="0 0 32 32" class="logo-symbol-icon">
+                  <circle cx="11" cy="16" r="7.5" fill="url(#fog-clear-grad)"/>
+                  <defs>
+                    <linearGradient id="fog-clear-grad" x1="11" y1="8.5" x2="11" y2="23.5" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#4a9eff"/>
+                      <stop offset="100%" stop-color="#ef4136"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+            </div>
+            <div class="logo-symbol-info">
+              <h4 class="text-sm font-semibold" style="color: var(--text-primary)">Total Cloud Cover &mdash; U+E027</h4>
+              <p class="body-text text-xs">
+                <strong>N &mdash; 0 oktas, clear sky</strong> (WMO Code Table 2700). Three horizontal
+                bars again — but here they represent the open sky: zero cloud cover, unobstructed
+                visibility. In the logo this symbol occupies the <em>right</em> position — what is.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="text-base font-semibold mb-2 mt-6" style="color: var(--text-primary)">The Sunrise Metaphor</h3>
+        <p class="body-text mb-4">
+          The logo arranges its two symbols in the posture of a sunrise over open water. The warm gradient
+          of the <em>ring</em> — amber at its base, deepening to crimson at its crown — evokes the first
+          light breaking through morning fog. The cool blue of the <em>bars</em> evokes both the sea
+          and the clarity that follows after the mist lifts. Light rising above the sea: a universal
+          symbol of hope and new beginnings.
+        </p>
+
+        <h3 class="text-base font-semibold mb-2" style="color: var(--text-primary)">The Meteorological Message</h3>
+        <p class="body-text mb-4">
+          Meteorology is, at its core, the study of <em>transformation</em> — of how the atmosphere
+          moves from one state to another. Fog does not stay forever; clear skies do not guarantee
+          tomorrow's sun. The past (what was observed, recorded, summarised in the W1W2 code) informs
+          the present (what is now visible, measurable, reportable in the N okta code). And it is
+          from this continuous chain of observation — past flowing into present — that forecasts
+          are made, that futures are glimpsed.
+        </p>
+        <p class="body-text">
+          The MetFont logo embodies this truth: <em>the past restrains vision, but scientific
+          observation clears the sky.</em> That is the hopeful promise at the heart of weather
+          forecasting — and at the heart of this project.
+        </p>
       </section>
 
       <!-- Credits -->
@@ -439,27 +505,83 @@ const planeList = computed(() => {
   justify-content: center;
 }
 
-/* ── Code block ── */
-.about-code {
-  background: var(--bg-overlay);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  overflow-x: auto;
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--text-secondary);
-}
-
-.about-code code {
-  font-family: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
-}
-
+/* ── Credits ── */
 .about-humor {
   font-style: italic;
   color: var(--text-tertiary);
   font-size: 0.875rem;
   padding-top: 1rem;
   border-top: 1px dashed var(--border-subtle);
+}
+
+/* ── Logo section ── */
+.logo-showcase {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.logo-full-display {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+.logo-symbols-explainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.logo-symbol-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.logo-symbol-visual {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.logo-symbol-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+.logo-symbol-arrow {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.logo-clear-sky {
+  width: 28px;
+  height: 28px;
+}
+
+.logo-clear-sky svg {
+  width: 100%;
+  height: 100%;
+}
+
+.logo-symbol-info h4 {
+  margin-bottom: 4px;
 }
 </style>

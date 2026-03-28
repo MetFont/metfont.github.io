@@ -52,22 +52,7 @@ onMounted(() => {
       <div class="flex items-center justify-between h-14 sm:h-16">
         <a href="#" @click.prevent="emit('navigateGrid')" class="flex items-center gap-3">
           <div class="header-logo">
-            <svg viewBox="0 0 32 32" fill="none" class="header-logo-svg">
-              <circle cx="12" cy="10" r="5" fill="#f0a030" opacity="0.9"/>
-              <line x1="12" y1="2" x2="12" y2="4" stroke="#f0a030" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="5" y1="10" x2="7" y2="10" stroke="#f0a030" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="7" y1="5" x2="8.5" y2="6.5" stroke="#f0a030" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="17" y1="5" x2="15.5" y2="6.5" stroke="#f0a030" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="17" y1="10" x2="19" y2="10" stroke="#f0a030" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M10 16c-2.5 0-4.5 2-4.5 4.5s2 4.5 4.5 4.5h12c2 0 3.5-1.5 3.5-3.5s-1.5-3.5-3.5-3.5c-.3-1.8-1.8-3.2-3.7-3.2-1.6 0-3 .9-3.7 2.2-.5-.6-1.2-1-2.1-1z" fill="white" opacity="0.95"/>
-              <line x1="11" y1="26" x2="10" y2="29" stroke="#4a9eff" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="16" y1="25" x2="15" y2="29" stroke="#4a9eff" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="21" y1="26" x2="20" y2="29" stroke="#4a9eff" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="hidden sm:block">
-            <div class="text-sm font-semibold" style="color: var(--text-primary)">MetFont: Symbols for Accurate Weather</div>
-            <div class="text-xs" style="color: var(--text-tertiary)">OGC/WMO/ICAO weather symbols in a font</div>
+            <img src="/logo-full.svg" alt="MetFont" class="header-logo-img" />
           </div>
         </a>
         <div class="flex items-center gap-3">
@@ -122,7 +107,6 @@ onMounted(() => {
           >
             About
           </button>
-          <span class="badge">{{ total }} symbols</span>
         </div>
       </div>
     </div>
@@ -140,19 +124,17 @@ onMounted(() => {
 }
 
 .header-logo {
-  width: 32px;
   height: 32px;
-  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-raised);
-  border: 1px solid var(--border-subtle);
 }
 
-.header-logo-svg {
-  width: 28px;
+.header-logo-img {
   height: 28px;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
 .header-nav-link {
