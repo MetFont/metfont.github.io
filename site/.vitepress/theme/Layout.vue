@@ -321,13 +321,66 @@ onUnmounted(() => {
         @reset-filters="resetFilters"
       />
     </template>
+
+    <!-- Site-wide footer -->
+    <footer class="site-footer">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <p class="text-sm" style="color: var(--text-tertiary)">
+              &copy; {{ new Date().getFullYear() }} Ribose. CC BY 3.0.
+            </p>
+            <span class="hidden sm:inline" style="color: var(--border-default)">|</span>
+            <a
+              href="https://www.ribose.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-ribose-link"
+            >
+              A Ribose project
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="https://github.com/MetFont/metfont" target="_blank" rel="noopener noreferrer" class="footer-ribose-link">
+              GitHub
+            </a>
+            <a href="https://github.com/MetFont/metfont/releases" target="_blank" rel="noopener noreferrer" class="footer-ribose-link">
+              Releases
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
-<style>
+<style scoped>
 .app-root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.site-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+}
+
+.footer-ribose-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-ribose-link:hover {
+  color: var(--accent);
 }
 </style>
