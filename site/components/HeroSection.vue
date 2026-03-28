@@ -19,19 +19,26 @@ defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
   <section class="hero-section">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
       <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+
+        <!-- ── Left: Editorial content ── -->
         <div class="animate-slide-up">
           <div class="label-text mb-3">Open Source &middot; Unicode PUA &middot; CC BY 3.0</div>
           <h1 class="heading-display mb-2">
-            MetFont
+            <img src="/logo-full.svg" alt="MetFont" class="hero-logo-img" />
           </h1>
-          <p class="hero-tagline mb-4">Symbols for Accurate Weather</p>
-          <p class="hero-subtitle mb-4">OGC/WMO/ICAO weather symbols in a font</p>
-          <p class="body-text text-base sm:text-lg max-w-lg mb-6">
-            An open-source symbol font packing WMO and ICAO meteorological symbols into
-            Unicode PUA (U+E000&ndash;U+E7FF). Curated by the OGC MetOcean DWG from WMO
-            and ICAO standards. Browse, search, and download every glyph.
-            <a href="#about" @click.prevent="$emit('viewAbout')" class="hero-about-link">Learn more &rarr;</a>
-          </p>
+          <p class="hero-tagline mb-4">Trusted Symbols for Accurate Weather</p>
+          <p class="hero-subtitle mb-4">From WMO, ICAO, OGC</p>
+
+          <!-- Partner / standards logos — institutional backing -->
+          <div class="hero-partners">
+            <span class="hero-partners-label">SOURCES: </span>
+            <div class="hero-partners-logos">
+              <img src="/logo-wmo.svg" alt="WMO — World Meteorological Organization" class="hero-partner-logo" />
+              <img src="/logo-icao.svg" alt="ICAO — International Civil Aviation Organization" class="hero-partner-logo" />
+              <img src="/logo-ogc.svg" alt="OGC — Open Geospatial Consortium" class="hero-partner-logo" />
+            </div>
+          </div>
+
           <div class="flex flex-wrap gap-2 mb-8">
             <span class="badge">SYNOP</span>
             <span class="badge">METAR</span>
@@ -56,14 +63,19 @@ defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
           </div>
         </div>
 
-        <div class="hidden lg:block animate-fade-in stagger-2">
+        <!-- ── Right: Hero illustration — glyphs + standards ── -->
+        <div class="hidden lg:flex flex-col items-center justify-center gap-8 animate-fade-in stagger-2">
+
+          <!-- Live glyph preview — the hero illustration -->
           <div class="hero-preview-grid">
             <div v-for="(glyph, i) in HERO_GLYPHS" :key="glyph.code"
               class="hero-glyph-cell" :style="{ animationDelay: (i * 0.08) + 's' }">
               <span class="hero-glyph-char">{{ getChar(glyph.code) }}</span>
             </div>
           </div>
-          <div class="mt-4 flex items-center justify-center gap-6">
+
+          <!-- Metrics strip -->
+          <div class="hero-metrics">
             <div class="flex items-center gap-2">
               <div class="w-3 h-px rounded" style="background: var(--em-stroke)"></div>
               <span class="text-xs" style="color: var(--text-tertiary)">Em box</span>
@@ -77,6 +89,7 @@ defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
               <span class="text-xs" style="color: var(--text-tertiary)">Advance</span>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -84,6 +97,7 @@ defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
 </template>
 
 <style scoped>
+/* ── Hero layout ── */
 .hero-section {
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
@@ -91,18 +105,23 @@ defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
   overflow: hidden;
 }
 
-.hero-section::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-muted) 0%, transparent 70%);
-  pointer-events: none;
+.hero-section > div {
+  position: relative;
+  z-index: 1;
 }
 
+/* ── Left: h1 logo ── */
+.hero-logo-img {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+h1.heading-display {
+  line-height: normal;
+}
+
+/* ── Left: typography ── */
 .hero-tagline {
   font-size: 1.125rem;
   font-weight: 500;
@@ -114,12 +133,50 @@ defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
   color: var(--text-tertiary);
 }
 
+/* ── Left: partner logos ── */
+.hero-partners {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.hero-partners-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.hero-partners-logos {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-partner-logo {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+  //opacity: 0.65;
+  //filter: brightness(1.0);
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.hero-partner-logo:hover {
+  opacity: 1;
+  filter: grayscale(0%);
+}
+
+/* ── Right: glyph preview grid ── */
 .hero-preview-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  max-width: 360px;
-  margin: 0 auto;
+  gap: 10px;
+  width: 100%;
 }
 
 .hero-glyph-cell {
@@ -159,23 +216,18 @@ defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
 
 .hero-glyph-char {
   font-family: 'MetFont', sans-serif;
-  font-size: 32px;
+  font-size: 28px;
   line-height: 1;
   position: relative;
   z-index: 1;
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
 }
 
-.hero-about-link {
-  color: var(--accent);
-  font-size: 0.875rem;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  margin-left: 4px;
-  transition: color 0.15s;
-}
-
-.hero-about-link:hover {
-  color: var(--accent-hover);
+/* ── Right: metrics strip ── */
+.hero-metrics {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 </style>

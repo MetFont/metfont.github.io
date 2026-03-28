@@ -48,12 +48,17 @@ function isInCompare(glyph) {
         />
       </div>
     </div>
+    <footer class="section-footer">
+      <p class="footer-humor">The fog cleared, the symbols remain.</p>
+    </footer>
   </main>
 </template>
 
 <style scoped>
 .grid-section {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   background: var(--bg-base);
 }
 
@@ -96,5 +101,18 @@ function isInCompare(glyph) {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+.section-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 24px 0;
+  margin-top: auto;
+}
+
+.footer-humor {
+  font-style: italic;
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  text-align: center;
 }
 </style>

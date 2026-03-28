@@ -114,12 +114,17 @@ const ALLOCATED_RANGES = [
         </div>
       </section>
     </div>
+    <footer class="section-footer">
+      <p class="footer-humor">Every cloud has a silver lining — look at our symbols.</p>
+    </footer>
   </main>
 </template>
 
 <style scoped>
 .categories-page {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   background: var(--bg-base);
 }
 
@@ -323,5 +328,18 @@ const ALLOCATED_RANGES = [
 
 .category-card:hover .card-link {
   color: var(--accent-hover);
+}
+
+.section-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 24px 0;
+  margin-top: auto;
+}
+
+.footer-humor {
+  font-style: italic;
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  text-align: center;
 }
 </style>
