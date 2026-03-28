@@ -24,8 +24,8 @@ defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
           <h1 class="heading-display mb-2">
             MetFont
           </h1>
-          <p class="hero-tagline mb-4">541 meteorological symbols. Accurate symbols for accurate weather.</p>
-          <p class="hero-quip mb-4"><em>It will happen when the weather cools.</em></p>
+          <p class="hero-tagline mb-4">Symbols for Accurate Weather</p>
+          <p class="hero-subtitle mb-4">OGC/WMO/ICAO weather symbols in a font</p>
           <p class="body-text text-base sm:text-lg max-w-lg mb-6">
             An open-source symbol font packing WMO and ICAO meteorological symbols into
             Unicode PUA (U+E000&ndash;U+E7FF). Curated by the OGC MetOcean DWG from WMO
@@ -109,13 +109,9 @@ defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
   color: var(--accent);
 }
 
-.hero-quip {
+.hero-subtitle {
   font-size: 0.9rem;
   color: var(--text-tertiary);
-}
-
-.hero-quip em {
-  font-style: italic;
 }
 
 .hero-preview-grid {
