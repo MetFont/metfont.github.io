@@ -71,7 +71,7 @@ const planeList = computed(() => {
       <div class="about-hero">
         <h1 class="about-title">About MetFont</h1>
         <p class="about-subtitle">
-          An open-source, freely licensed symbol font containing {{ totalGlyphs }} meteorological
+          An open-source, freely licensed metrology symbol font containing {{ totalGlyphs }} meteorological
           symbols from WMO and ICAO standards. Accurate symbols for accurate weather.
         </p>
       </div>
@@ -84,9 +84,9 @@ const planeList = computed(() => {
           symbol font that maps {{ totalGlyphs }} meteorological symbols to the
           <strong style="color: var(--text-primary)">Unicode Private Use Area</strong>
           (U+E000&ndash;U+E7FF). The symbols were curated by the
-          <a href="https://www.ogc.org/about/working-groups/metocean-domain-working-group" target="_blank" rel="noopener" class="about-link">OGC MetOcean Domain Working Group</a>
-          from <a href="https://public.wmo.int" target="_blank" rel="noopener" class="about-link">WMO</a>
-          and ICAO standards, and are documented with code table references, usage in weather reports
+          <a href="meteorology-oceanography" target="_blank" rel="noopener" class="about-link">OGC MetOcean Domain Working Group</a>
+          from <a href="https://wmo.int" target="_blank" rel="noopener" class="about-link">WMO</a>
+          and <a href="https://www.icao.int" target="_blank" rel="noopener" class="about-link">ICAO</a> standards, and are documented with code table references, usage in weather reports
           (SYNOP, METAR, TAF, SIGWX), and the publications where they are defined.
         </p>
         <p class="body-text">
@@ -312,7 +312,7 @@ const planeList = computed(() => {
           <p>
             <strong style="color: var(--text-primary)">Symbol sources:</strong>
             WMO and ICAO meteorological symbols, curated by the
-            <a href="https://www.ogc.org/about/working-groups/metocean-domain-working-group" target="_blank" rel="noopener" class="about-link">OGC MetOcean Domain Working Group</a>
+            <a href="https://www.ogc.org/groups/meteorology-oceanography-domain-working-group/" target="_blank" rel="noopener" class="about-link">OGC MetOcean Domain Working Group</a>
             from WMO Commission for Basic Systems (CBS) standards documented in
             <em>WMO-No. 485 &mdash; Manual on Codes</em> and ICAO Annex 3 / WMO-No. 49.
           </p>

@@ -67,6 +67,8 @@ const currentHash = ref(typeof window !== 'undefined' ? window.location.hash.sli
 
 function onHashChange() {
   currentHash.value = window.location.hash.slice(1)
+  // Always scroll to top on navigation
+  window.scrollTo(0, 0)
 }
 
 onMounted(() => {
