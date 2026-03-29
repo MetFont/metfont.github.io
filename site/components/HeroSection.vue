@@ -3,13 +3,15 @@ function getChar(unicode) {
   return String.fromCodePoint(parseInt(unicode.replace('U+', ''), 16))
 }
 
+// Curated representative glyphs — one per major weather category.
+// Each entry: unicode codepoint, category dot color, short label, WMO/ICAO code.
 const HERO_GLYPHS = [
-  { code: 'U+E713', label: 'Rain' },
-  { code: 'U+E71A', label: 'Thunderstorm' },
-  { code: 'U+E719', label: 'Snow' },
-  { code: 'U+E71F', label: 'Fog' },
-  { code: 'U+E703', label: 'Drizzle' },
-  { code: 'U+E71B', label: 'Tropical Cyclone' },
+  { code: 'U+E14D', catColor: '#f0a030', label: 'Present Weather', sublabel: 'Continuous heavy snow', wmo: 'ww_75' },
+  { code: 'U+E713', catColor: '#e05050', label: 'Significant Weather', sublabel: 'Rain', wmo: 'ICAO' },
+  { code: 'U+E71A', catColor: '#e05050', label: 'Significant Weather', sublabel: 'Thunderstorms', wmo: 'ICAO' },
+  { code: 'U+E000', catColor: '#4a9eff', label: 'Sky & Cloud', sublabel: 'Cloud high', wmo: 'CH' },
+  { code: 'U+E600', catColor: '#2ab0a0', label: 'Wind & Ocean', sublabel: 'Calm', wmo: 'dd_00' },
+  { code: 'U+E500', catColor: '#6c7fd9', label: 'Pressure', sublabel: 'Increase, then decrease', wmo: 'a' },
 ]
 
 defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
@@ -22,16 +24,14 @@ defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
 
         <!-- ── Left: Editorial content ── -->
         <div class="animate-slide-up">
-          <div class="label-text mb-3">Open Source &middot; Unicode PUA &middot; CC BY 3.0</div>
+          <div class="label-text mb-3">Open Source Symbols For Accurate Weather</div>
           <h1 class="heading-display mb-2">
             <img src="/logo-full.svg" alt="MetFont" class="hero-logo-img" />
           </h1>
-          <p class="hero-tagline mb-4">Trusted Symbols for Accurate Weather</p>
-          <p class="hero-subtitle mb-4">From WMO, ICAO, OGC</p>
+          <p class="hero-tagline mb-4">Meteorological symbols from WMO, ICAO, OGC</p>
 
           <!-- Partner / standards logos — institutional backing -->
           <div class="hero-partners">
-            <span class="hero-partners-label">SOURCES: </span>
             <div class="hero-partners-logos">
               <img src="/logo-wmo.svg" alt="WMO — World Meteorological Organization" class="hero-partner-logo" />
               <img src="/logo-icao.svg" alt="ICAO — International Civil Aviation Organization" class="hero-partner-logo" />
@@ -70,7 +70,16 @@ defineEmits(['browse', 'viewGrid', 'viewAbout', 'viewDownload'])
           <div class="hero-preview-grid">
             <div v-for="(glyph, i) in HERO_GLYPHS" :key="glyph.code"
               class="hero-glyph-cell" :style="{ animationDelay: (i * 0.08) + 's' }">
-              <span class="hero-glyph-char">{{ getChar(glyph.code) }}</span>
+              <div class="hero-glyph-inner">
+                <span class="hero-glyph-char">{{ getChar(glyph.code) }}</span>
+                <div class="hero-glyph-info">
+                  <span class="hero-glyph-cat" :style="{ color: glyph.catColor }">
+                    {{ glyph.label }}
+                  </span>
+                  <span class="hero-glyph-name">{{ glyph.sublabel }}</span>
+                  <span class="hero-glyph-code">{{ glyph.wmo }}</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -128,11 +137,6 @@ h1.heading-display {
   color: var(--accent);
 }
 
-.hero-subtitle {
-  font-size: 0.9rem;
-  color: var(--text-tertiary);
-}
-
 /* ── Left: partner logos ── */
 .hero-partners {
   display: flex;
@@ -142,15 +146,6 @@ h1.heading-display {
   flex-wrap: wrap;
 }
 
-.hero-partners-label {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-tertiary);
-  white-space: nowrap;
-}
-
 .hero-partners-logos {
   display: flex;
   align-items: center;
@@ -158,12 +153,12 @@ h1.heading-display {
 }
 
 .hero-partner-logo {
-  height: 70px;
+  height: 55px;
   width: auto;
   object-fit: contain;
-  //opacity: 0.65;
-  //filter: brightness(1.0);
-  transition: opacity 0.2s ease, filter 0.2s ease;
+  opacity: 0.6;
+  filter: grayscale(20%);
+  //transition: opacity 0.2s ease, filter 0.2s ease;
 }
 
 .hero-partner-logo:hover {
@@ -175,23 +170,22 @@ h1.heading-display {
 .hero-preview-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 12px;
   width: 100%;
 }
 
 .hero-glyph-cell {
-  aspect-ratio: 128 / 55;
   background: var(--glyph-bg);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
   animation: fadeIn 0.4s ease-out both;
   position: relative;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Grid pattern overlay */
 .hero-glyph-cell::before {
   content: '';
   position: absolute;
@@ -201,8 +195,10 @@ h1.heading-display {
     linear-gradient(90deg, var(--glyph-grid) 1px, transparent 1px);
   background-size: 8px 8px;
   pointer-events: none;
+  z-index: 0;
 }
 
+/* Baseline indicator */
 .hero-glyph-cell::after {
   content: '';
   position: absolute;
@@ -212,15 +208,61 @@ h1.heading-display {
   height: 1px;
   background: var(--baseline-stroke);
   opacity: 0.5;
+  z-index: 1;
+}
+
+.hero-glyph-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 6px 8px;
+  gap: 4px;
 }
 
 .hero-glyph-char {
   font-family: 'MetFont', sans-serif;
-  font-size: 28px;
+  font-size: 26px;
   line-height: 1;
-  position: relative;
-  z-index: 1;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
+}
+
+.hero-glyph-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  width: 100%;
+}
+
+.hero-glyph-cat {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hero-glyph-name {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.hero-glyph-code {
+  font-size: 9px;
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--text-tertiary);
+  background: var(--bg-overlay);
+  padding: 0 4px;
+  border-radius: 3px;
+  letter-spacing: 0.03em;
 }
 
 /* ── Right: metrics strip ── */

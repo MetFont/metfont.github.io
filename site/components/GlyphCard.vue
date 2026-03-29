@@ -81,7 +81,7 @@ function getPlaneColor(cat) {
     <div class="glyph-card-info">
       <span class="glyph-card-code">{{ glyph.unicode }}</span>
       <span class="glyph-card-cat">{{ getCategoryLabel(glyph.category) }}</span>
-      <span class="glyph-card-name">{{ glyph.name }}</span>
+      <span class="glyph-card-name" :title="glyph.name">{{ glyph.name }}</span>
     </div>
     <button
       @click.stop="emit('toggleCompare', glyph)"
@@ -179,6 +179,8 @@ function getPlaneColor(cat) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  /* min-height ensures uniform card height even with short names */
+  min-height: 1.2em;
 }
 
 .glyph-card-action {
