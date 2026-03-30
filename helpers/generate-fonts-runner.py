@@ -58,7 +58,7 @@ def build_one_method(args):
     return (method, True, result.stdout, None)
 
 results = {}
-with ProcessPoolExecutor(max_workers=len(METHODS)) as executor:
+with ProcessPoolExecutor(max_workers=3) as executor:
     args_list = [(m, BUILD_DIR, repo_dir, svg_files) for m in METHODS]
     futures = {executor.submit(build_one_method, args): args[0] for args in args_list}
     for future in as_completed(futures):
