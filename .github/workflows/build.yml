@@ -2,7 +2,14 @@ name: Build Fonts
 
 on:
   pull_request:
-  workflow_dispatch:
+    paths:
+      - 'src/**'
+      - 'helpers/**'
+      - 'vendor/**'
+      - 'data/**'
+      - 'font/VERSION'
+      - 'package.json'
+      - 'package-lock.json'
 
 jobs:
   build:
@@ -29,12 +36,8 @@ jobs:
       - name: Clean upstream SVGs
         run: python3 helpers/clean-sources.py
 
-      - name: Normalize font-ready SVGs
-        run: |
-          python3 helpers/normalize-svg.py \
-            --input-dir src/ \
-            --mapping data/codepoint-map.json \
-            --output-dir color/svg/
+      - name: Prepare font-ready SVGs
+        run: npm run prepare-fonts
 
       - name: Generate fonts
         run: python3 helpers/generate-fonts.py ${{ github.ref_name }}
