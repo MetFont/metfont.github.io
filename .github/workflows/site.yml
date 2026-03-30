@@ -68,23 +68,8 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           set +e
-          OWNER="MetFont"
-          REPO="metfont"
-          ASSETS_URL="https://api.github.com/repos/${OWNER}/${REPO}/releases/latest"
-          ZIP_URL=$(curl -sS "$ASSETS_URL" | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-for asset in data.get('assets', []):
-    if asset['name'].endswith('.zip'):
-        print(asset['browser_download_url'])
-        break
-" 2>&1)
-          if [ -n "$ZIP_URL" ]; then
-            echo "Downloading fonts from release: $ZIP_URL"
-            curl -sSL "$ZIP_URL" -o /tmp/metfont-fonts.zip
-            mkdir -p font
-            unzip -o /tmp/metfont-fonts.zip -d font
-            npm run copy-fonts
+          chmod +x helpers/download-fonts-for-site.sh
+          if helpers/download-fonts-for-site.sh; then
             echo "Fonts downloaded from release"
           else
             echo "No release found — building fonts locally"
