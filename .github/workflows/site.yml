@@ -78,7 +78,7 @@ jobs:
             python3 helpers/assign-codepoints.py
             python3 helpers/clean-sources.py
             npm run prepare-fonts
-            python3 helpers/generate-fonts.py ""
+            python3 helpers/generate-fonts.py ${{ github.ref_name }}
             npm run copy-fonts
           fi
 
