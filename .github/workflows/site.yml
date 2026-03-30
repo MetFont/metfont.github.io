@@ -31,6 +31,7 @@ jobs:
           curl -sL "$ASSET_URL" -o MetFont.zip
           unzip -o MetFont.zip -d font/
           # Copy fonts and metadata to public/
+          mkdir -p public
           find font/ -maxdepth 2 -type f \( -name '*.woff2' -o -name '*.ttf' \) -exec cp {} public/ \;
           cp font/metadata.json public/metadata.json
 
