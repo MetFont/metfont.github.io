@@ -1,4 +1,8 @@
 <script setup>
+const props = defineProps({
+  version: { type: String, default: '' }
+})
+
 const emit = defineEmits(['navigateBack'])
 
 const FONT_FORMATS = [
@@ -30,13 +34,31 @@ const FONT_FORMATS = [
     icon: 'palette',
   },
   {
-    id: 'svg_ttf',
+    id: 'otf_colr',
+    name: 'COLRv1 OTF',
+    file: 'MetFont-cff_colr_1.otf',
+    size: '56 KB',
+    description: 'Color OpenType with CFF outlines and COLRv1 color tables. Works in Adobe Illustrator, Inkscape, and other apps that support OTF color fonts.',
+    bestFor: 'Desktop publishing and vector editors',
+    icon: 'pen-tool',
+  },
+  {
+    id: 'otf2_colr',
+    name: 'COLRv2 OTF',
+    file: 'MetFont-cff2_colr_1.otf',
+    size: '55 KB',
+    description: 'Latest COLRv2 color font with CFF2 outlines. Maximum compatibility across modern applications.',
+    bestFor: 'Cutting-edge app support',
+    icon: 'layers',
+  },
+  {
+    id: 'svg',
     name: 'SVG TTF',
     file: 'MetFont-picosvgz.ttf',
     size: '73 KB',
     description: 'Font with embedded SVG table. Provides the highest fidelity rendering in Safari and Firefox.',
     bestFor: 'Maximum rendering fidelity',
-    icon: 'pen-tool',
+    icon: 'star',
   },
 ]
 </script>
@@ -64,6 +86,12 @@ const FONT_FORMATS = [
           Perfect symbols for imperfect weather. Grab MetFont in whatever format
           floats your boat.
         </p>
+        <a href="https://github.com/MetFont/metfont/releases/latest" target="_blank" rel="noopener" class="package-link">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+          Download full package{{ version ? ' v' + version : '' }} (.zip)
+        </a>
       </div>
 
       <!-- Format cards -->
@@ -77,14 +105,20 @@ const FONT_FORMATS = [
                   <template v-if="fmt.icon === 'globe'">
                     <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 4l-4 4"/><path d="M12 2v10"/>
                   </template>
-                  <template v-else-if="fmt.icon === 'shield'">
-                    <path d="M12 22s8-4 8-10V5l-8-3v9c0 6 8 10 8 10z"/><path d="M9 9v1M12 9v1M15 9v1"/>
-                  </template>
                   <template v-else-if="fmt.icon === 'monitor'">
                     <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
                   </template>
+                  <template v-else-if="fmt.icon === 'palette'">
+                    <circle cx="13.5" cy="6.5" r="0.5" fill="currentColor"/><circle cx="17.5" cy="10.5" r="0.5" fill="currentColor"/><circle cx="8.5" cy="7.5" r="0.5" fill="currentColor"/><circle cx="6.5" cy="12.5" r="0.5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+                  </template>
                   <template v-else-if="fmt.icon === 'pen-tool'">
                     <path d="M12 19l7-7 3 3-7 7-3-3 7-7z"/><path d="M18 13l-1.5-7.5L2 2l3 3L13 16.5"/>
+                  </template>
+                  <template v-else-if="fmt.icon === 'layers'">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+                  </template>
+                  <template v-else-if="fmt.icon === 'star'">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                   </template>
                 </svg>
               </div>
@@ -260,6 +294,62 @@ wchar_t ch = 0xE71A;</code></pre>
   margin-bottom: 3rem;
 }
 
+/* ── Hero ── */
+.about-hero {
+  margin-bottom: 3rem;
+}
+
+.about-title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .about-title {
+    font-size: 2.5rem;
+  }
+}
+
+.about-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.package-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: var(--text-inverse);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.package-link:hover {
+  background: var(--accent-hover);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ── Section titles ── */
+.about-section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
 /* ── Format grid ── */
 .format-grid {
   display: grid;
@@ -269,7 +359,7 @@ wchar_t ch = 0xE71A;</code></pre>
 
 @media (min-width: 768px) {
   .format-grid {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 

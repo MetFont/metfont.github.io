@@ -4,7 +4,8 @@ import { ref, onMounted } from 'vue'
 const props = defineProps({
   total: { type: Number, default: 0 },
   currentView: { type: String, default: 'grid' },
-  selectedGlyph: { type: Object, default: null }
+  selectedGlyph: { type: Object, default: null },
+  version: { type: String, default: '' }
 })
 
 const emit = defineEmits(['navigateGrid', 'navigateAbout', 'navigateDownload', 'navigateCategories', 'navigateUsage'])
@@ -56,6 +57,7 @@ onMounted(() => {
           </div>
         </a>
         <div class="flex items-center gap-3">
+          <span v-if="version" class="version-badge">v{{ version }}</span>
           <button
             @click="toggleTheme"
             class="theme-toggle"
@@ -153,6 +155,18 @@ onMounted(() => {
 
 .header-nav-link.active {
   color: var(--accent);
+}
+
+.version-badge {
+  font-size: 11px;
+  font-weight: 500;
+  font-family: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+  color: var(--text-tertiary);
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.02em;
 }
 
 .theme-toggle {

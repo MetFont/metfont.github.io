@@ -15,18 +15,12 @@ import UsageSection from '../../components/UsageSection.vue'
 const glyphs = ref([])
 const glyphMetadata = ref(null) // Lazy-loaded on first glyph detail view
 const planeInfo = ref({})
+const fontVersion = ref('')
 const loading = ref(true)
 
-// Lazy-load glyph metadata (~600KB) only when needed
-let metadataLoading = null
+// Metadata is now eagerly loaded from metadata.json in onMounted
 async function ensureMetadata() {
-  if (glyphMetadata.value) return glyphMetadata.value
-  if (metadataLoading) return metadataLoading
-  metadataLoading = fetch('/glyph-metadata.json')
-    .then(r => r.json())
-    .then(data => { glyphMetadata.value = data; return data })
-    .catch(e => { console.error('Failed to load metadata:', e); metadataLoading = null; return null })
-  return metadataLoading
+  return glyphMetadata.value || {}
 }
 
 // Apply metadata to a glyph object (mutates in place for reactivity)
@@ -38,12 +32,12 @@ function enrichGlyph(glyph) {
 
 onMounted(async () => {
   try {
-    const [glyphsRes, planeRes] = await Promise.all([
-      fetch('/glyphs.json'),
-      fetch('/plane-info.json')
-    ])
-    glyphs.value = await glyphsRes.json()
-    planeInfo.value = await planeRes.json()
+    const metaRes = await fetch('/metadata.json')
+    const data = await metaRes.json()
+    glyphs.value = data.glyphs || []
+    planeInfo.value = data.planes || {}
+    fontVersion.value = data.version || ''
+    glyphMetadata.value = data.metadata || {}
   } catch (e) {
     console.error('Failed to load data:', e)
   } finally {
@@ -231,6 +225,7 @@ onUnmounted(() => {
       :total="glyphs.length"
       :current-view="currentView"
       :selected-glyph="selectedGlyph"
+      :version="fontVersion"
       @navigate-grid="navigateToGrid"
       @navigate-about="navigateToAbout"
       @navigate-download="navigateToDownload"
@@ -270,6 +265,7 @@ onUnmounted(() => {
 
     <DownloadSection
       v-else-if="currentView === 'download'"
+      :version="fontVersion"
       @navigate-back="navigateToGrid"
     />
 
