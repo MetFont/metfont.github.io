@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed, onUnmounted, watch } from 'vue'
+import { ref, onMounted, computed, onUnmounted } from 'vue'
 import AppHeader from '../../components/AppHeader.vue'
 import HeroSection from '../../components/HeroSection.vue'
 import FilterBar from '../../components/FilterBar.vue'
@@ -13,31 +13,24 @@ import CategoriesSection from '../../components/CategoriesSection.vue'
 import UsageSection from '../../components/UsageSection.vue'
 
 const glyphs = ref([])
-const glyphMetadata = ref(null) // Lazy-loaded on first glyph detail view
+const glyphMetadata = ref({})
 const planeInfo = ref({})
 const fontVersion = ref('')
+const releases = ref([])
 const loading = ref(true)
-
-// Metadata is now eagerly loaded from metadata.json in onMounted
-async function ensureMetadata() {
-  return glyphMetadata.value || {}
-}
-
-// Apply metadata to a glyph object (mutates in place for reactivity)
-function enrichGlyph(glyph) {
-  if (!glyphMetadata.value || !glyph || glyph.metadata) return
-  const meta = glyphMetadata.value[glyph.unicode]
-  if (meta) glyph.metadata = meta
-}
 
 onMounted(async () => {
   try {
-    const metaRes = await fetch('/metadata.json')
+    const [metaRes, releasesRes] = await Promise.all([
+      fetch('/metadata.json'),
+      fetch('/releases.json'),
+    ])
     const data = await metaRes.json()
     glyphs.value = data.glyphs || []
     planeInfo.value = data.planes || {}
     fontVersion.value = data.version || ''
     glyphMetadata.value = data.metadata || {}
+    releases.value = await releasesRes.json()
   } catch (e) {
     console.error('Failed to load data:', e)
   } finally {
@@ -102,16 +95,13 @@ const selectedPlane = computed(() => {
 
 const selectedGlyph = computed(() => {
   if (!selectedCodepoint.value) return null
-  return glyphs.value.find(g => g.unicode === selectedCodepoint.value) || null
+  const glyph = glyphs.value.find(g => g.unicode === selectedCodepoint.value) || null
+  // Attach eager metadata
+  if (glyph && glyphMetadata.value[glyph.unicode]) {
+    glyph.metadata = glyphMetadata.value[glyph.unicode]
+  }
+  return glyph
 })
-
-// Lazy-load metadata when a glyph detail view is opened
-watch(selectedGlyph, async (glyph) => {
-  if (!glyph) return
-  if (glyph.metadata) return
-  const meta = await ensureMetadata()
-  if (meta) enrichGlyph(glyph)
-}, { immediate: true })
 
 function navigateToGlyph(glyph) {
   window.location.hash = `glyph/${glyph.unicode}`
@@ -266,6 +256,7 @@ onUnmounted(() => {
     <DownloadSection
       v-else-if="currentView === 'download'"
       :version="fontVersion"
+      :releases="releases"
       @navigate-back="navigateToGrid"
     />
 

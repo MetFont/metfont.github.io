@@ -1,6 +1,7 @@
 <script setup>
 const props = defineProps({
-  version: { type: String, default: '' }
+  version: { type: String, default: '' },
+  releases: { type: Array, default: () => [] }
 })
 
 const emit = defineEmits(['navigateBack'])
@@ -264,6 +265,31 @@ wchar_t ch = 0xE71A;</code></pre>
         </div>
       </section>
 
+      <!-- All releases -->
+      <section v-if="releases.length > 0" class="download-section">
+        <h2 class="about-section-title">All Versions</h2>
+        <div class="releases-list">
+          <a
+            v-for="rel in releases"
+            :key="rel.tag"
+            :href="rel.zipUrl"
+            target="_blank"
+            rel="noopener"
+            class="release-row"
+          >
+            <div class="release-info">
+              <span class="release-tag">{{ rel.tag }}</span>
+              <span class="release-date">{{ rel.date }}</span>
+            </div>
+            <div class="release-arrow">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </section>
+
       <!-- Footer humor -->
       <div class="download-footer">
         <p class="download-humor">
@@ -479,5 +505,56 @@ wchar_t ch = 0xE71A;</code></pre>
   color: var(--text-tertiary);
   font-size: 0.875rem;
   text-align: center;
+}
+
+/* ── Releases list ── */
+.releases-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.release-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.release-row:hover {
+  border-color: var(--border-default);
+  background: var(--accent-subtle);
+}
+
+.release-row:hover .release-arrow {
+  color: var(--accent);
+}
+
+.release-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.release-tag {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+  color: var(--text-primary);
+}
+
+.release-date {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.release-arrow {
+  color: var(--text-tertiary);
+  transition: color 0.15s;
 }
 </style>

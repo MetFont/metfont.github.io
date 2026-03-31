@@ -33,6 +33,26 @@ jobs:
           find font/ -maxdepth 2 -type f \( -name '*.woff2' -o -name '*.ttf' \) -exec cp {} site/public/ \;
           cp font/metadata.json site/public/metadata.json
 
+      - name: Fetch all releases for version history
+        run: |
+          curl -sL "https://api.github.com/repos/MetFont/metfont/releases" \
+            | python3 -c "
+import sys, json
+releases = json.load(sys.stdin)
+out = []
+for r in releases:
+    zip_asset = next((a for a in r.get('assets', []) if a['name'].endswith('.zip')), None)
+    if zip_asset:
+        out.append({
+            'tag': r['tag_name'],
+            'name': r['name'] or r['tag_name'],
+            'date': r['published_at'][:10],
+            'url': r['html_url'],
+            'zipUrl': zip_asset['browser_download_url'],
+        })
+print(json.dumps(out, indent=2))
+" > site/public/releases.json
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
